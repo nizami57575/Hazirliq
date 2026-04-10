@@ -16,60 +16,49 @@
     <div id="entry-screen" class="overlay">
         <div class="entry-card">
             <span class="top-badge">Yüksək Nəticəli Mentorlar</span>
-            <h2>Xoş Gəlmisiniz!</h2>
-            <p>Aysu, Aidə, Gültən və Sədakətin rəhbərliyi ilə mükəmməl hazırlıq.</p>
-            
-            <a href="https://whatsapp.com/channel/0029VbCdpnuD8SDuYHINdY2P" class="btn btn-wa" target="_blank">
-                <i class="fab fa-whatsapp"></i> Kanalımıza Qoşulun
-            </a>
-
-            <div class="main-buttons">
-                <button class="btn btn-reg" onclick="showModal()">📝 Qeydiyyatdan Keç</button>
-                <button class="btn btn-guest" onclick="openSite()">🚀 Qeydiyyat olmadan başla</button>
-            </div>
+            <h2>Zirvə Portalına Xoş Gəldiniz!</h2>
+            <p>Aysu, Aidə, Gültən və Sədakət ilə öyrənməyə başlayın.</p>
+            <button class="btn btn-reg" onclick="showModal('general')">📝 Qeydiyyatdan Keç</button>
+            <button class="btn btn-guest" onclick="openSite()">🚀 Qeydiyyat olmadan başla</button>
         </div>
     </div>
 
-    <div id="reg-modal" class="modal">
+    <div id="bot-modal" class="modal">
         <div class="modal-content">
-            <h3>Qeydiyyat Forması</h3>
-            <input type="text" id="student-name" placeholder="Ad və Soyad">
-            <input type="tel" id="student-phone" placeholder="WhatsApp nömrəniz">
-            <button class="btn btn-reg" onclick="submitToWhatsApp()">Təsdiqlə</button>
-            <p onclick="closeModal()" style="color:red; cursor:pointer; margin-top:10px;">Bağla</p>
+            <div id="bot-header" class="bot-header">🤖 Zirvə Köməkçisi</div>
+            <div id="bot-chat">
+                <p id="bot-text">Salam! Davam etmək üçün adınızı qeyd edin:</p>
+                <div id="bot-input-area">
+                    <input type="text" id="user-input" placeholder="Yazın...">
+                    <button onclick="processBot()">Göndər</button>
+                </div>
+                <div id="bot-options" class="options-grid"></div>
+            </div>
+            <p onclick="closeModal()" class="close-txt">Bağla</p>
         </div>
     </div>
 
-    <div id="site-content" style="display:none;">
-        <nav>
-            <div class="logo">ZİRVƏ PORTAL</div>
-        </nav>
-
-        <section class="hero">
-            <h1>Gələcəyin Təhsili</h1>
-            <p>1-4-cü siniflər üçün aylıq cəmi 10 AZN!</p>
-        </section>
-
+    <div id="site-content" style="display:none; padding-top: 60px;">
         <section class="features">
-            <div class="f-card">
+            <div class="f-card" onclick="showModal('learning')">
                 <i class="fas fa-bolt"></i>
                 <h3>Sürətli Öyrənmə</h3>
-                <p>0-dan başlayaraq qısa zamanda nəticə.</p>
+                <p>Proqram haqqında məlumat al.</p>
             </div>
-            <div class="f-card">
+            <div class="f-card" onclick="showModal('exams')">
                 <i class="fas fa-check-double"></i>
                 <h3>Həftəlik Sınaq</h3>
-                <p>Hər həftə sonu biliklərin yoxlanılması.</p>
+                <p>Sınaq vaxtlarını öyrən.</p>
             </div>
-            <div class="f-card">
+            <div class="f-card" onclick="showModal('mentor')">
                 <i class="fas fa-user-graduate"></i>
                 <h3>Mentor Dəstəyi</h3>
-                <p>Təcrübəli 10-cu siniflərdən fərdi yanaşma.</p>
+                <p>Mentorlarla tanış ol.</p>
             </div>
         </section>
-
+        
         <footer>
-            <p>Hörmətlə: Aysu (Riyaziyyat), Sədakət (English), Aidə (Azerbaijan), Gültən (Russian)</p>
+            <p>Hörmətlə: 10-cu sinif şagirdləri</p>
         </footer>
     </div>
 
