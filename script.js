@@ -1,15 +1,13 @@
-let botStep = 0;
-let currentTopic = '';
-let userName = '';
+let currentStep = 0;
+let userProfile = { name: "", topic: "" };
 
 function openSite() {
     document.getElementById('entry-screen').style.display = 'none';
-    document.getElementById('site-content').style.display = 'block';
+    document.getElementById('main-content').style.display = 'block';
 }
 
-function showModal(topic) {
-    currentTopic = topic;
-    botStep = 0;
+function showBot(topic) {
+    userProfile.topic = topic;
     document.getElementById('bot-modal').style.display = 'block';
     resetBot();
 }
@@ -19,63 +17,70 @@ function closeModal() {
 }
 
 function resetBot() {
-    botStep = 0;
-    document.getElementById('bot-input-area').style.display = 'flex';
-    document.getElementById('bot-options').innerHTML = '';
-    document.getElementById('bot-text').innerText = "Salam! Davam etmək üçün adınızı yazın:";
+    currentStep = 0;
+    document.getElementById('user-name-input').style.display = 'block';
+    document.querySelector('.send-btn').style.display = 'block';
+    document.getElementById('bot-choices').innerHTML = '';
+    document.getElementById('bot-msg').innerText = "Zirvə Portalına xoş gəldiniz! Davam etmək üçün adınızı yazın:";
 }
 
-function processBot() {
-    let input = document.getElementById('user-input').value;
-    if(!input && botStep === 0) return;
+function startConversing() {
+    const nameInput = document.getElementById('user-name-input');
+    if(nameInput.value.trim() === "") return;
+    
+    userProfile.name = nameInput.value;
+    nameInput.style.display = 'none';
+    document.querySelector('.send-btn').style.display = 'none';
+    
+    handleBotLogic();
+}
 
-    if(botStep === 0) {
-        userName = input;
-        document.getElementById('user-input').value = '';
-        botStep = 1;
-        handleTopicLogic();
+function handleBotLogic() {
+    let msg = "";
+    let options = [];
+
+    switch(userProfile.topic) {
+        case 'registration':
+            msg = `Salam ${userProfile.name}! Qeydiyyat üçün hansı sinif üzrə maraqlanırsınız?`;
+            options = ["1-ci Sinif", "2-ci Sinif", "3-cü Sinif", "4-cü Sinif"];
+            break;
+        case 'fast_learning':
+            msg = `${userProfile.name}, dərslərimiz həftədə 4 gün, hər dərs 2 saatdır. Hansı fənn sizin üçün öncəlikdir?`;
+            options = ["Riyaziyyat", "İngilis dili", "Rus dili"];
+            break;
+        case 'exams':
+            msg = "Sınaq imtahanlarımız hər həftə sonu keçirilir. Nəticələri haradan izləmək istərdiniz?";
+            options = ["WhatsApp-dan", "E-mail vasitəsilə"];
+            break;
+        case 'mentors':
+            msg = "Mentorlarımız 9-cu sinif buraxılış imtahanlarında yüksək nəticə göstərmiş şagirdlərdir. Kiminlə əlaqə saxlamaq istərdiniz?";
+            options = ["Aysu (Riyaziyyat)", "Sədakət (İngilis)", "Aidə (Azərbaycan dili)", "Gültən (Rus dili)"];
+            break;
     }
+
+    document.getElementById('bot-msg').innerText = msg;
+    renderChoices(options);
 }
 
-function handleTopicLogic() {
-    document.getElementById('bot-input-area').style.display = 'none';
-    let text = '';
-    let opts = [];
-
-    if(currentTopic === 'learning') {
-        text = `Salam ${userName}! Bizim dərslər həftədə 4 gün, hər dərs 2 saatdır. Hansı fənni maraqlanırsan?`;
-        opts = ["Riyaziyyat", "English", "Rus dili"];
-    } else if(currentTopic === 'exams') {
-        text = `Salam! Sınaqlar hər bazar günü keçirilir. Nəticələri haradan görmək istəyirsən?`;
-        opts = ["WhatsApp Qrupu", "Sayt"];
-    } else {
-        text = `Hörmətli ${userName}, 10-cu sinif mentorlarımıza qoşulmaq istəyirsən?`;
-        opts = ["Bəli, qoşul", "Məlumat al"];
-    }
-
-    document.getElementById('bot-text').innerText = text;
-    renderOptions(opts);
-}
-
-function renderOptions(opts) {
-    const area = document.getElementById('bot-options');
-    area.innerHTML = '';
-    opts.forEach(opt => {
-        let btn = document.createElement('button');
+function renderChoices(options) {
+    const list = document.getElementById('bot-choices');
+    list.innerHTML = '';
+    options.forEach(opt => {
+        const btn = document.createElement('button');
         btn.innerText = opt;
-        btn.className = 'btn-reg';
-        btn.style.fontSize = '12px';
-        btn.onclick = () => finishBot(opt);
-        area.appendChild(btn);
+        btn.onclick = () => finalize(opt);
+        list.appendChild(btn);
     });
 }
 
-function finishBot(choice) {
-    document.getElementById('bot-text').innerText = "Əla! Sizi məsul şəxsə yönləndirirəm...";
+function finalize(choice) {
+    document.getElementById('bot-msg').innerText = "Məlumatlar qeydə alındı! Sizi WhatsApp-a yönləndirirəm...";
+    document.getElementById('bot-choices').innerHTML = "";
+    
     setTimeout(() => {
-        let myNum = "9940517728824"; // ÖZ NÖMRƏNİ BURA YAZ
-        let msg = `Salam! Mən ${userName}. ${currentTopic} haqqında ${choice} seçdim. Qoşulmaq istəyirəm.`;
-        window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(msg)}`, '_blank');
+        const myNum = "994XXXXXXXXX"; // ÖZ NÖMRƏNİ BURA YAZ
+        const finalMsg = `Yeni Müraciət! 🚀\nAd: ${userProfile.name}\nMövzu: ${userProfile.topic}\nSeçim: ${choice}`;
+        window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(finalMsg)}`, '_blank');
         closeModal();
         openSite();
     }, 1500);
