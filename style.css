@@ -1,40 +1,29 @@
 :root {
-    --primary: #00d2ff;
-    --secondary: #3a7bd5;
-    --wa-green: #25D366;
-    --dark: #0f172a;
-    --accent: #FFD700;
+    --primary: #4e54c8;
+    --wa: #25d366;
 }
 
-body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--dark); color: white; }
+body { margin: 0; font-family: sans-serif; background: #0f172a; color: white; }
 
 /* Banner */
-.info-banner { background: linear-gradient(90deg, #ff8c00, #ed1c24); padding: 10px; position: fixed; width: 100%; top: 0; z-index: 9999; text-align: center; }
+.info-banner { background: #ff4757; text-align: center; padding: 10px; font-size: 14px; position: fixed; width: 100%; top: 0; z-index: 1000; }
 
-/* Entry Screen */
-.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,11,16,0.98); display: flex; justify-content: center; align-items: center; z-index: 5000; }
-.entry-card { background: #1e293b; padding: 40px; border-radius: 30px; text-align: center; border: 1px solid var(--primary); box-shadow: 0 0 30px rgba(0,210,255,0.3); max-width: 90%; }
-.top-badge { background: var(--accent); color: black; padding: 5px 15px; border-radius: 20px; font-weight: bold; margin-bottom: 15px; display: inline-block; }
+/* Overlay */
+.overlay { position: fixed; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 500; }
+.entry-card { background: #1e293b; padding: 40px; border-radius: 20px; text-align: center; border: 2px solid var(--primary); width: 350px; }
 
 /* Buttons */
-.btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; text-decoration: none; transition: 0.3s; }
+.btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; text-decoration: none; }
 .btn-reg { background: var(--primary); color: white; }
 .btn-guest { background: #334155; color: #cbd5e1; }
-.btn-wa { background: var(--wa-green); color: white; border-radius: 50px; }
+.btn-wa { background: var(--wa); color: white; }
 
 /* Modal */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 7000; }
-.modal-content { background: white; color: black; margin: 15% auto; padding: 30px; border-radius: 20px; width: 300px; text-align: center; }
-input, select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ddd; }
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 600; }
+.modal-content { background: white; color: black; margin: 20% auto; padding: 20px; border-radius: 10px; width: 280px; text-align: center; }
+input { width: 90%; padding: 10px; margin: 10px 0; }
 
-/* Grid and Cards */
-.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; padding: 40px 10%; }
-.team-card { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-.m-initial { width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 24px; font-weight: bold; }
-.subj { color: var(--accent); font-weight: bold; font-size: 14px; }
-
-/* Quiz */
-.quiz-box { background: white; color: black; padding: 30px; border-radius: 20px; max-width: 500px; margin: 0 auto; border: 3px dashed var(--primary); text-align: center; }
-.options button { background: var(--secondary); color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 10px; cursor: pointer; }
-
-footer { padding: 50px; text-align: center; background: #0a0b10; }
+/* Features */
+.features { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 40px; }
+.f-card { background: #1e293b; padding: 20px; border-radius: 15px; width: 250px; text-align: center; border: 1px solid #334155; }
+.f-card i { font-size: 40px; color: var(--primary); margin-bottom: 10px; }
