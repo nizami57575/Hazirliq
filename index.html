@@ -31,21 +31,15 @@
     <div id="bot-modal" class="modal">
         <div class="glass-card bot-container">
             <div class="bot-header">
-                <div class="bot-title">
-                    <i class="fas fa-robot"></i> <span>Zirvə Köməkçisi</span>
-                </div>
+                <i class="fas fa-robot"></i> <span>Zirvə Köməkçisi</span>
                 <button onclick="closeModal()" class="close-btn">&times;</button>
             </div>
             <div id="bot-content" class="bot-body">
-                <p id="bot-msg">Salam! Davam etmək üçün adınızı yazın:</p>
-                
+                <p id="bot-msg"></p>
                 <div id="bot-input-group">
                     <input type="text" id="user-name-input" placeholder="Adınız və Soyadınız">
-                    <button onclick="startConversing()" class="send-btn">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+                    <button onclick="startConversing()" class="send-btn"><i class="fas fa-paper-plane"></i></button>
                 </div>
-
                 <div id="bot-choices" class="choice-list"></div>
             </div>
         </div>
@@ -62,19 +56,19 @@
                 <div class="f-card" onclick="showBot('fast_learning')">
                     <div class="icon-box"><i class="fas fa-bolt"></i></div>
                     <h3>Sürətli Öyrənmə</h3>
-                    <p>Həftədə 4 gün, hər dərs 2 saat intensiv proqram.</p>
+                    <p>Həftədə 4 gün intensiv proqram.</p>
                 </div>
                 <div class="f-card" onclick="showBot('mentors')">
                     <div class="icon-box"><i class="fas fa-user-check"></i></div>
                     <h3>Mentor Dəstəyi</h3>
-                    <p>Aysu, Aidə, Gültən və Sədakət ilə öyrənin.</p>
+                    <p>Yüksək ballı 10-cu siniflərlə öyrənin.</p>
                 </div>
             </div>
 
             <section id="weekly-quiz-section" class="glass-card quiz-section">
-                <h2 id="quiz-week-title">Həftəlik Sınaq</h2>
+                <h2 id="quiz-week-title">Yüklənir...</h2>
                 <div id="quiz-display">
-                    <p id="current-question">Sınaq yüklənir...</p>
+                    <p id="current-question"></p>
                     <div id="quiz-options" class="choice-list"></div>
                 </div>
                 <p id="quiz-result"></p>
@@ -82,7 +76,7 @@
         </main>
 
         <footer>
-            <p>Zirvə Hazırlıq Mərkəzi &copy; 2026</p>
+            <p>Əlaqə: +994 51 772 88 24</p>
         </footer>
     </div>
 
