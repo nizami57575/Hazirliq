@@ -3,31 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zirvə Hazırlıq Mərkəzi</title>
-    
+    <title>Zirvə Təhsil Portalı</title>
     <link rel="stylesheet" href="style.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
 
-    <nav>
-        <div class="logo">Zirvə</div>
-        <div class="menu">
-            <a href="#about" style="color: white; margin-right: 20px; text-decoration: none;">Haqqımızda</a>
-            <button onclick="toggleDarkMode()" style="background: none; border: none; color: white; cursor: pointer;">
-                <i class="fas fa-moon"></i>
-            </button>
+    <div id="info-banner" class="info-banner">
+        <div class="info-content">
+            <i class="fas fa-star"></i>
+            <p><strong>DİQQƏT:</strong> Bu saytı 9-cu sinifdə yüksək bal toplamış 10-cu sinif şagirdləri yaradıb. Zəhmət olmasa ilk olaraq buranı oxuyun!</p>
+            <button onclick="this.parentElement.parentElement.style.display='none'">&times;</button>
         </div>
-    </nav>
+    </div>
 
-    <section class="hero">
-        <h1>Gələcəyin İbtidai Hazırlığı</h1>
-        <p>Keyfiyyətli təhsil artıq bir klik uzaqlıqda!</p>
-        <br>
-        <a href="javascript:void(0)" onclick="contactWhatsApp()" class="cta-btn">Qeydiyyata Başla</a>
-    </section>
+    <div id="entry-screen" class="overlay">
+        <div class="entry-card">
+            <div class="top-badge">Top Nəticəli Mentorlar</div>
+            <h2>Zirvə Portalına Xoş Gəldiniz!</h2>
+            <p>Aysu, Aidə, Gültən və Sədakətin rəhbərliyi ilə 1-4-cü sinif hazırlığı.</p>
+            
+            <a href="https://whatsapp.com/channel/0029VbCdpnuD8SDuYHINdY2P" class="btn btn-wa" target="_blank">
+                <i class="fab fa-whatsapp"></i> WhatsApp Kanalına Qoşul
+            </a>
 
+            <div class="entry-actions">
+                <button class="btn btn-reg" onclick="showModal()">📝 Qeydiyyatdan Keç</button>
+                <button class="btn btn-guest" onclick="closeEntry()">🚀 Qeydiyyat olmadan başla</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="reg-modal" class="modal">
+        <div class="modal-content">
+            <h3>Tələbə Qeydiyyatı</h3>
+            <input type="text" id="name" placeholder="Ad və Soyad">
+            <input type="tel" id="phone" placeholder="WhatsApp nömrəniz">
+            <select id="grade">
+                <option value="1">1-ci sinif</option>
+                <option value="2">2-ci sinif</option>
+                <option value="3">3-cü sinif</option>
+                <option value="4">4-cü sinif</option>
+            </select>
+            <button class="btn btn-reg" onclick="sendWhatsApp()">Təsdiqlə və Göndər</button>
+            <p onclick="closeModal()" style="color:red; cursor:pointer; margin-top:10px;">Bağla</p>
+        </div>
+    </div>
+
+    <div id="main-content" style="display:none;">
+        <nav>
+            <div class="logo">ZİRVƏ</div>
+            <div class="nav-icons"><i class="fas fa-graduation-cap"></i></div>
+        </nav>
+
+        <section class="hero">
+            <h1 data-aos="zoom-in">Gələcəyinizi Bizimlə Qurun!</h1>
+            <p>Professional mentorlarla 0-dan mükəmməl hazırlıq.</p>
+        </section>
+
+        <section class="quiz-section">
+            <h2>🎮 Günün Sualı</h2>
+            <div class="quiz-box">
+                <p id="q-text">5 + 5 × 5 neçə edir?</p>
+                <div class="options">
+                    <button onclick="checkQuiz(50)">50</button>
+                    <button onclick="checkQuiz(30)">30</button>
+                    <button onclick="checkQuiz(25)">25</button>
+                </div>
+                <p id="feedback"></p>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <h2 class="section-title">Bizim Mentor Heyətimiz</h2>
+            <div class="team-grid">
+                <div class="team-card" data-aos="fade-up">
+                    <div class="m-initial">A</div>
+                    <h3>Aysu</h3>
+                    <span class="subj">Riyaziyyat</span>
+                </div>
+                <div class="team-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="m-initial">S</div>
+                    <h3>Sədakət</h3>
+                    <span class="subj">İngilis dili</span>
+                </div>
+                <div class="team-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="m-initial">A</div>
+                    <h3>Aidə</h3>
+                    <span class="subj">Azərbaycan dili</span>
+                </div>
+                <div class="team-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="m-initial">G</div>
+                    <h3>Gültən</h3>
+                    <span class="subj">Rus dili</span>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Zirvə Hazırlıq Portalı</p>
+            <div class="signature">
+                Hörmətlə: 10-cu sinif şagirdləri - Aysu, Aidə, Gültən, Sədakət
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
