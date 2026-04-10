@@ -1,135 +1,36 @@
-:root {
-    --primary: #6366f1;
-    --secondary: #a855f7;
-    --dark-bg: #030712;
-    --wa: #22c55e;
-}
+:root { --primary: #6366f1; --secondary: #a855f7; --bg: #030712; }
+body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; }
 
-body {
-    margin: 0;
-    font-family: 'Inter', system-ui, sans-serif;
-    background-color: var(--dark-bg);
-    color: white;
-    overflow-x: hidden;
-}
+/* Arka Plan Animasiyası */
+.bg-animation { position: fixed; inset: 0; z-index: -1; }
+.circle { position: absolute; width: 350px; height: 350px; background: linear-gradient(var(--primary), #ec4899); border-radius: 50%; filter: blur(90px); opacity: 0.3; animation: float 15s infinite alternate; }
+.circle:nth-child(2) { bottom: -100px; right: -100px; background: var(--secondary); animation-delay: -7s; }
+@keyframes float { from { transform: translate(0,0); } to { transform: translate(80px, 80px); } }
 
-/* Animasiyalı Arka Plan */
-.bg-animation {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-}
-
-.circle {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    background: linear-gradient(var(--primary), var(--secondary));
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.4;
-    animation: move 20s infinite alternate;
-}
-
-.circle:nth-child(2) {
-    bottom: -100px;
-    right: -100px;
-    background: #ec4899;
-    animation-delay: -5s;
-}
-
-@keyframes move {
-    from { transform: translate(0, 0); }
-    to { transform: translate(100px, 100px); }
-}
-
-/* Glassmorphism Kartları */
-.glass-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    padding: 30px;
-}
+/* Kartlar */
+.glass-card { background: rgba(255,255,255,0.04); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; margin: 15px; }
 
 /* Banner */
-.info-banner {
-    background: rgba(239, 68, 68, 0.9);
-    padding: 12px;
-    text-align: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 100;
-    font-size: 14px;
-}
+.info-banner { background: #ff4757; text-align: center; padding: 10px; font-size: 13px; position: fixed; width: 100%; top:0; z-index: 500; }
 
 /* Overlay */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.entry-card { text-align: center; width: 300px; }
 
-/* Düymələr */
-.btn {
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border-radius: 12px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
+/* Grid */
+.features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+.f-card { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
 
+/* Buttons */
+.btn { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
 .btn-primary { background: var(--primary); color: white; }
-.btn-outline { background: transparent; border: 1.5px solid var(--primary); color: white; }
-.btn:hover { opacity: 0.9; transform: scale(1.02); }
-
-/* Grid Layout */
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 100px 20px 40px;
-}
-
-.f-card {
-    background: rgba(255,255,255,0.03);
-    padding: 30px;
-    border-radius: 20px;
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.05);
-    transition: 0.3s;
-}
-
-.f-card:hover { background: rgba(255,255,255,0.08); border-color: var(--primary); }
-
-.icon-box {
-    font-size: 32px;
-    color: var(--primary);
-    margin-bottom: 15px;
-}
+.btn-outline { background: transparent; border: 1px solid var(--primary); color: white; margin-top: 5px; }
 
 /* Modal & Bot */
-.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; padding: 40px 20px; }
-.bot-container { max-width: 400px; margin: auto; }
-.bot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-.close-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; padding: 50px 20px; }
+.bot-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; }
+.choice-list button { display: block; width: 100%; padding: 10px; margin-top: 8px; background: #2d3748; color: white; border: none; border-radius: 8px; cursor: pointer; }
 
-#bot-input-group { display: flex; gap: 10px; }
-#user-name-input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #111; color: white; }
-.send-btn { background: var(--primary); border: none; color: white; padding: 0 15px; border-radius: 8px; cursor: pointer; }
-
-.choice-list button {
-    display: block; width: 100%; padding: 10px; margin-top: 8px;
-    background: #334155; border: none; border-radius: 8px; color: white; cursor: pointer;
-}
+/* Quiz Section */
+.quiz-section { text-align: center; border: 1px solid var(--primary); }
+#quiz-result { font-weight: bold; margin-top: 10px; }
