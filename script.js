@@ -73,7 +73,7 @@ function renderOptions(opts) {
 function finishBot(choice) {
     document.getElementById('bot-text').innerText = "Əla! Sizi məsul şəxsə yönləndirirəm...";
     setTimeout(() => {
-        let myNum = "994XXXXXXXXX"; // ÖZ NÖMRƏNİ BURA YAZ
+        let myNum = "9940517728824"; // ÖZ NÖMRƏNİ BURA YAZ
         let msg = `Salam! Mən ${userName}. ${currentTopic} haqqında ${choice} seçdim. Qoşulmaq istəyirəm.`;
         window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(msg)}`, '_blank');
         closeModal();
