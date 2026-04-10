@@ -1,29 +1,23 @@
-:root {
-    --primary: #4e54c8;
-    --wa: #25d366;
-}
+:root { --primary: #4e54c8; --wa: #25d366; --bg: #0f172a; }
+body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; }
 
-body { margin: 0; font-family: sans-serif; background: #0f172a; color: white; }
+.info-banner { background: #ff4757; text-align: center; padding: 10px; font-size: 13px; position: fixed; width: 100%; top: 0; z-index: 1000; }
 
-/* Banner */
-.info-banner { background: #ff4757; text-align: center; padding: 10px; font-size: 14px; position: fixed; width: 100%; top: 0; z-index: 1000; }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 2000; }
+.entry-card { background: #1e293b; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid var(--primary); width: 320px; }
 
-/* Overlay */
-.overlay { position: fixed; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 500; }
-.entry-card { background: #1e293b; padding: 40px; border-radius: 20px; text-align: center; border: 2px solid var(--primary); width: 350px; }
-
-/* Buttons */
-.btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; text-decoration: none; }
+.btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
 .btn-reg { background: var(--primary); color: white; }
-.btn-guest { background: #334155; color: #cbd5e1; }
-.btn-wa { background: var(--wa); color: white; }
+.btn-guest { background: #334155; color: white; }
 
-/* Modal */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 600; }
-.modal-content { background: white; color: black; margin: 20% auto; padding: 20px; border-radius: 10px; width: 280px; text-align: center; }
-input { width: 90%; padding: 10px; margin: 10px 0; }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; padding-top: 100px; }
+.modal-content { background: white; color: black; margin: auto; padding: 20px; border-radius: 15px; width: 300px; }
 
-/* Features */
-.features { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 40px; }
-.f-card { background: #1e293b; padding: 20px; border-radius: 15px; width: 250px; text-align: center; border: 1px solid #334155; }
-.f-card i { font-size: 40px; color: var(--primary); margin-bottom: 10px; }
+.bot-header { background: var(--primary); color: white; padding: 10px; border-radius: 10px 10px 0 0; margin: -20px -20px 20px -20px; }
+#bot-input-area { display: flex; gap: 5px; margin-top: 10px; }
+#user-input { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 5px; }
+
+.features { display: grid; gap: 20px; padding: 20px; }
+.f-card { background: #1e293b; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; border: 1px solid #334155; }
+.f-card:hover { transform: scale(1.05); border-color: var(--primary); }
+.close-txt { color: red; text-align: center; cursor: pointer; margin-top: 15px; font-size: 14px; }
