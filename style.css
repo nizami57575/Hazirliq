@@ -1,0 +1,108 @@
+/* Modern Rəng Palitrası və Dəyişənlər */
+:root {
+    --primary: #4A90E2;
+    --secondary: #FFD700;
+    --accent: #FF4757;
+    --dark: #0f172a;
+    --glass: rgba(255, 255, 255, 0.05);
+    --grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+body {
+    background-color: var(--dark);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* 1. Glassmorphism Naviqasiya */
+nav {
+    position: fixed;
+    width: 100%;
+    padding: 20px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+    border-bottom: 1px solid var(--glass);
+}
+
+/* 2. Hero Section Animasiyası */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--grad);
+    clip-path: ellipse(150% 100% at 50% 0%);
+}
+
+.hero h1 {
+    font-size: 4rem;
+    text-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    animation: slideInLeft 1s ease-out;
+}
+
+/* 3. Kartlar üçün Hover Effekti */
+.feature-card {
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 40px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.feature-card:hover {
+    background: white;
+    color: var(--dark);
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* 4. Qiymət Etiketi "Pulse" Effekti */
+.price-tag {
+    font-size: 3rem;
+    color: var(--secondary);
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+/* 5. Düymə (Gradient & Glow) */
+.cta-btn {
+    background: var(--accent);
+    padding: 18px 45px;
+    border-radius: 50px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    box-shadow: 0 10px 20px rgba(255, 71, 87, 0.3);
+    transition: 0.3s;
+}
+
+.cta-btn:hover {
+    box-shadow: 0 15px 30px rgba(255, 71, 87, 0.5);
+    letter-spacing: 1px;
+}
+
+/* Animasiyalar */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); text-shadow: 0 0 20px var(--secondary); }
+    100% { transform: scale(1); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-100px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Mobil Uyğunluq (Responsive) */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.5rem; }
+    .feature-grid { grid-template-columns: 1fr; }
+}
