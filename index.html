@@ -14,7 +14,7 @@
         <div class="circle"></div>
     </div>
 
-    <div id="top-banner" class="info-banner">
+    <div class="info-banner">
         <p>🚀 <strong>MƏLUMAT:</strong> Bu layihə yüksək ballı 10-cu sinif mentorları tərəfindən idarə olunur!</p>
     </div>
 
@@ -31,12 +31,11 @@
     <div id="bot-modal" class="modal">
         <div class="glass-card bot-container">
             <div class="bot-header">
-                <i class="fas fa-robot"></i>
-                <span>Zirvə Köməkçisi</span>
+                <i class="fas fa-robot"></i> <span>Zirvə Köməkçisi</span>
                 <button onclick="closeModal()" class="close-btn">&times;</button>
             </div>
             <div id="bot-content" class="bot-body">
-                <p id="bot-msg">Salam! Davam etmək üçün adınızı yazın:</p>
+                <p id="bot-msg"></p>
                 <div id="bot-input-group">
                     <input type="text" id="user-name-input" placeholder="Adınız və Soyadınız">
                     <button onclick="startConversing()" class="send-btn"><i class="fas fa-paper-plane"></i></button>
@@ -46,28 +45,34 @@
         </div>
     </div>
 
-    <div id="main-content" style="display:none;">
+    <div id="main-content" style="display:none; padding-top: 80px;">
         <header class="main-header">
             <div class="logo">ZİRVƏ</div>
-            <div class="header-info">Aylıq cəmi: <span>10 AZN</span></div>
+            <div class="price-tag">Aylıq: <span>10 AZN</span></div>
         </header>
 
-        <main class="features-grid">
-            <div class="f-card" onclick="showBot('fast_learning')">
-                <div class="icon-box"><i class="fas fa-bolt"></i></div>
-                <h3>Sürətli Öyrənmə</h3>
-                <p>Həftədə 4 gün, hər dərs 2 saatlıq intensiv proqram.</p>
+        <main class="container">
+            <div class="features-grid">
+                <div class="f-card" onclick="showBot('fast_learning')">
+                    <div class="icon-box"><i class="fas fa-bolt"></i></div>
+                    <h3>Sürətli Öyrənmə</h3>
+                    <p>Həftədə 4 gün, hər dərs 2 saat intensiv proqram.</p>
+                </div>
+                <div class="f-card" onclick="showBot('mentors')">
+                    <div class="icon-box"><i class="fas fa-user-check"></i></div>
+                    <h3>Mentor Dəstəyi</h3>
+                    <p>Aysu, Aidə, Gültən və Sədakət ilə öyrənin.</p>
+                </div>
             </div>
-            <div class="f-card" onclick="showBot('exams')">
-                <div class="icon-box"><i class="fas fa-file-signature"></i></div>
-                <h3>Həftəlik Sınaq</h3>
-                <p>Hər həftə sonu biliklərin yoxlanılması və hesabat.</p>
-            </div>
-            <div class="f-card" onclick="showBot('mentors')">
-                <div class="icon-box"><i class="fas fa-user-check"></i></div>
-                <h3>Mentor Dəstəyi</h3>
-                <p>Aysu, Aidə, Gültən və Sədakət ilə birbaşa əlaqə.</p>
-            </div>
+
+            <section id="weekly-quiz-section" class="glass-card quiz-section">
+                <h2 id="quiz-week-title">Yüklənir...</h2>
+                <div id="quiz-display">
+                    <p id="current-question"></p>
+                    <div id="quiz-options" class="choice-list"></div>
+                </div>
+                <p id="quiz-result"></p>
+            </section>
         </main>
 
         <footer>
@@ -75,6 +80,7 @@
         </footer>
     </div>
 
+    <script src="questions.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
