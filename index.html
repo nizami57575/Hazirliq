@@ -9,56 +9,69 @@
 </head>
 <body>
 
+    <div class="bg-animation">
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
     <div id="top-banner" class="info-banner">
-        <p>📢 <strong>OXUYUN:</strong> Bu saytı 9-cu sinifdə yüksək bal toplamış 10-cu sinif şagirdləri yaradıb!</p>
+        <p>🚀 <strong>MƏLUMAT:</strong> Bu layihə yüksək ballı 10-cu sinif mentorları tərəfindən idarə olunur!</p>
     </div>
 
     <div id="entry-screen" class="overlay">
-        <div class="entry-card">
-            <span class="top-badge">Yüksək Nəticəli Mentorlar</span>
-            <h2>Zirvə Portalına Xoş Gəldiniz!</h2>
-            <p>Aysu, Aidə, Gültən və Sədakət ilə öyrənməyə başlayın.</p>
-            <button class="btn btn-reg" onclick="showModal('general')">📝 Qeydiyyatdan Keç</button>
-            <button class="btn btn-guest" onclick="openSite()">🚀 Qeydiyyat olmadan başla</button>
+        <div class="glass-card entry-card">
+            <div class="status-badge">Aktiv Hazırlıq</div>
+            <h2>Zirvə Portal</h2>
+            <p>Gələcəyinizi bizimlə zirvəyə daşıyın.</p>
+            <button class="btn btn-primary" onclick="showBot('registration')">📝 İndi Qeydiyyatdan Keç</button>
+            <button class="btn btn-outline" onclick="openSite()">🚀 Saytı Kəşf Et</button>
         </div>
     </div>
 
     <div id="bot-modal" class="modal">
-        <div class="modal-content">
-            <div id="bot-header" class="bot-header">🤖 Zirvə Köməkçisi</div>
-            <div id="bot-chat">
-                <p id="bot-text">Salam! Davam etmək üçün adınızı qeyd edin:</p>
-                <div id="bot-input-area">
-                    <input type="text" id="user-input" placeholder="Yazın...">
-                    <button onclick="processBot()">Göndər</button>
-                </div>
-                <div id="bot-options" class="options-grid"></div>
+        <div class="glass-card bot-container">
+            <div class="bot-header">
+                <i class="fas fa-robot"></i>
+                <span>Zirvə Köməkçisi</span>
+                <button onclick="closeModal()" class="close-btn">&times;</button>
             </div>
-            <p onclick="closeModal()" class="close-txt">Bağla</p>
+            <div id="bot-content" class="bot-body">
+                <p id="bot-msg">Salam! Davam etmək üçün adınızı yazın:</p>
+                <div id="bot-input-group">
+                    <input type="text" id="user-name-input" placeholder="Adınız və Soyadınız">
+                    <button onclick="startConversing()" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+                <div id="bot-choices" class="choice-list"></div>
+            </div>
         </div>
     </div>
 
-    <div id="site-content" style="display:none; padding-top: 60px;">
-        <section class="features">
-            <div class="f-card" onclick="showModal('learning')">
-                <i class="fas fa-bolt"></i>
+    <div id="main-content" style="display:none;">
+        <header class="main-header">
+            <div class="logo">ZİRVƏ</div>
+            <div class="header-info">Aylıq cəmi: <span>10 AZN</span></div>
+        </header>
+
+        <main class="features-grid">
+            <div class="f-card" onclick="showBot('fast_learning')">
+                <div class="icon-box"><i class="fas fa-bolt"></i></div>
                 <h3>Sürətli Öyrənmə</h3>
-                <p>Proqram haqqında məlumat al.</p>
+                <p>Həftədə 4 gün, hər dərs 2 saatlıq intensiv proqram.</p>
             </div>
-            <div class="f-card" onclick="showModal('exams')">
-                <i class="fas fa-check-double"></i>
+            <div class="f-card" onclick="showBot('exams')">
+                <div class="icon-box"><i class="fas fa-file-signature"></i></div>
                 <h3>Həftəlik Sınaq</h3>
-                <p>Sınaq vaxtlarını öyrən.</p>
+                <p>Hər həftə sonu biliklərin yoxlanılması və hesabat.</p>
             </div>
-            <div class="f-card" onclick="showModal('mentor')">
-                <i class="fas fa-user-graduate"></i>
+            <div class="f-card" onclick="showBot('mentors')">
+                <div class="icon-box"><i class="fas fa-user-check"></i></div>
                 <h3>Mentor Dəstəyi</h3>
-                <p>Mentorlarla tanış ol.</p>
+                <p>Aysu, Aidə, Gültən və Sədakət ilə birbaşa əlaqə.</p>
             </div>
-        </section>
-        
+        </main>
+
         <footer>
-            <p>Hörmətlə: 10-cu sinif şagirdləri</p>
+            <p>Zirvə Hazırlıq Mərkəzi &copy; 2026</p>
         </footer>
     </div>
 
