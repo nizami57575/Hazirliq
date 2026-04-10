@@ -1,87 +1,110 @@
-let currentStep = 0;
 let userProfile = { name: "", topic: "" };
+let currentQIndex = 0;
 
+// SAYTIN AÇILMASI
 function openSite() {
     document.getElementById('entry-screen').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
+    loadWeeklyQuiz();
 }
 
+// BOT SİSTEMİ
 function showBot(topic) {
     userProfile.topic = topic;
     document.getElementById('bot-modal').style.display = 'block';
     resetBot();
 }
 
-function closeModal() {
-    document.getElementById('bot-modal').style.display = 'none';
-}
+function closeModal() { document.getElementById('bot-modal').style.display = 'none'; }
 
 function resetBot() {
-    currentStep = 0;
     document.getElementById('user-name-input').style.display = 'block';
     document.querySelector('.send-btn').style.display = 'block';
     document.getElementById('bot-choices').innerHTML = '';
-    document.getElementById('bot-msg').innerText = "Zirvə Portalına xoş gəldiniz! Davam etmək üçün adınızı yazın:";
+    document.getElementById('bot-msg').innerText = "Salam! Davam etmək üçün adınızı yazın:";
 }
 
 function startConversing() {
-    const nameInput = document.getElementById('user-name-input');
-    if(nameInput.value.trim() === "") return;
+    const nameVal = document.getElementById('user-name-input').value;
+    if(!nameVal) return;
+    userProfile.name = nameVal;
     
-    userProfile.name = nameInput.value;
-    nameInput.style.display = 'none';
+    document.getElementById('user-name-input').style.display = 'none';
     document.querySelector('.send-btn').style.display = 'none';
     
-    handleBotLogic();
+    handleBotFlow();
 }
 
-function handleBotLogic() {
+function handleBotFlow() {
     let msg = "";
-    let options = [];
+    let opts = [];
 
-    switch(userProfile.topic) {
-        case 'registration':
-            msg = `Salam ${userProfile.name}! Qeydiyyat üçün hansı sinif üzrə maraqlanırsınız?`;
-            options = ["1-ci Sinif", "2-ci Sinif", "3-cü Sinif", "4-cü Sinif"];
-            break;
-        case 'fast_learning':
-            msg = `${userProfile.name}, dərslərimiz həftədə 4 gün, hər dərs 2 saatdır. Hansı fənn sizin üçün öncəlikdir?`;
-            options = ["Riyaziyyat", "İngilis dili", "Rus dili"];
-            break;
-        case 'exams':
-            msg = "Sınaq imtahanlarımız hər həftə sonu keçirilir. Nəticələri haradan izləmək istərdiniz?";
-            options = ["WhatsApp-dan", "E-mail vasitəsilə"];
-            break;
-        case 'mentors':
-            msg = "Mentorlarımız 9-cu sinif buraxılış imtahanlarında yüksək nəticə göstərmiş şagirdlərdir. Kiminlə əlaqə saxlamaq istərdiniz?";
-            options = ["Aysu (Riyaziyyat)", "Sədakət (İngilis)", "Aidə (Azərbaycan dili)", "Gültən (Rus dili)"];
-            break;
+    if(userProfile.topic === 'registration') {
+        msg = `Salam ${userProfile.name}, hansı sinif hazırlığı ilə maraqlanırsınız?`;
+        opts = ["1-ci Sinif", "2-ci Sinif", "3-cü Sinif", "4-cü Sinif"];
+    } else if(userProfile.topic === 'fast_learning') {
+        msg = "Dərslər həftədə 4 gün olur. Aylıq ödəniş 10 AZN-dir. Razısınız?";
+        opts = ["Bəli, razıyam", "Ətraflı məlumat al"];
+    } else {
+        msg = "Hansı mentorla əlaqə qurmaq istəyirsiniz?";
+        opts = ["Aysu", "Aidə", "Gültən", "Sədakət"];
     }
 
     document.getElementById('bot-msg').innerText = msg;
-    renderChoices(options);
-}
-
-function renderChoices(options) {
-    const list = document.getElementById('bot-choices');
-    list.innerHTML = '';
-    options.forEach(opt => {
+    const choiceDiv = document.getElementById('bot-choices');
+    opts.forEach(opt => {
         const btn = document.createElement('button');
         btn.innerText = opt;
-        btn.onclick = () => finalize(opt);
-        list.appendChild(btn);
+        btn.onclick = () => finalizeBot(opt);
+        choiceDiv.appendChild(btn);
     });
 }
 
-function finalize(choice) {
-    document.getElementById('bot-msg').innerText = "Məlumatlar qeydə alındı! Sizi WhatsApp-a yönləndirirəm...";
-    document.getElementById('bot-choices').innerHTML = "";
+function finalizeBot(choice) {
+    const myNum = "994XXXXXXXXX"; // ÖZ NÖMRƏNİ BURA YAZ
+    const text = `Salam! Adım ${userProfile.name}. Mən ${userProfile.topic} haqqında ${choice} seçdim.`;
+    window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(text)}`, '_blank');
+    closeModal();
+    openSite();
+}
+
+// SINAQ SİSTEMİ
+function loadWeeklyQuiz() {
+    if(typeof weeklyQuiz === 'undefined') return;
+    document.getElementById('quiz-week-title').innerText = weeklyQuiz.weekTitle;
+    showQuestion();
+}
+
+function showQuestion() {
+    const qData = weeklyQuiz.questions[currentQIndex];
+    document.getElementById('current-question').innerText = `${currentQIndex + 1}. ${qData.question}`;
     
-    setTimeout(() => {
-        const myNum = "994XXXXXXXXX"; // ÖZ NÖMRƏNİ BURA YAZ
-        const finalMsg = `Yeni Müraciət! 🚀\nAd: ${userProfile.name}\nMövzu: ${userProfile.topic}\nSeçim: ${choice}`;
-        window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(finalMsg)}`, '_blank');
-        closeModal();
-        openSite();
-    }, 1500);
+    const optsDiv = document.getElementById('quiz-options');
+    optsDiv.innerHTML = '';
+    
+    qData.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.className = 'btn-outline';
+        btn.onclick = () => checkAns(opt, qData.correct);
+        optsDiv.appendChild(btn);
+    });
+}
+
+function checkAns(selected, correct) {
+    const res = document.getElementById('quiz-result');
+    if(selected === correct) {
+        res.innerText = "Doğrudur! 🎉"; res.style.color = "#22c55e";
+        setTimeout(() => {
+            currentQIndex++;
+            if(currentQIndex < weeklyQuiz.questions.length) {
+                showQuestion(); res.innerText = "";
+            } else {
+                document.getElementById('quiz-display').innerHTML = "<h3>Sınaq tamamlandı! 🏆</h3>";
+                currentQIndex = 0;
+            }
+        }, 1500);
+    } else {
+        res.innerText = "Səhvdir, yenidən yoxla! ❌"; res.style.color = "#ef4444";
+    }
 }
