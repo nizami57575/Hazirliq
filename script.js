@@ -61,7 +61,7 @@ function handleBotFlow() {
 }
 
 function finalizeBot(choice) {
-    const myNum = "994XXXXXXXXX"; // ÖZ NÖMRƏNİ BURA YAZ
+    const myNum = "9940517728824"; // ÖZ NÖMRƏNİ BURA YAZ
     const text = `Salam! Adım ${userProfile.name}. Mən ${userProfile.topic} haqqında ${choice} seçdim.`;
     window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(text)}`, '_blank');
     closeModal();
