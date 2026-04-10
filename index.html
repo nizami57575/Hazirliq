@@ -31,22 +31,28 @@
     <div id="bot-modal" class="modal">
         <div class="glass-card bot-container">
             <div class="bot-header">
-                <i class="fas fa-robot"></i> <span>Zirvə Köməkçisi</span>
+                <div class="bot-title">
+                    <i class="fas fa-robot"></i> <span>Zirvə Köməkçisi</span>
+                </div>
                 <button onclick="closeModal()" class="close-btn">&times;</button>
             </div>
             <div id="bot-content" class="bot-body">
-                <p id="bot-msg"></p>
+                <p id="bot-msg">Salam! Davam etmək üçün adınızı yazın:</p>
+                
                 <div id="bot-input-group">
                     <input type="text" id="user-name-input" placeholder="Adınız və Soyadınız">
-                    <button onclick="startConversing()" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+                    <button onclick="startConversing()" class="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
                 </div>
+
                 <div id="bot-choices" class="choice-list"></div>
             </div>
         </div>
     </div>
 
     <div id="main-content" style="display:none; padding-top: 80px;">
-        <header class="main-header">
+        <header class="main-header container">
             <div class="logo">ZİRVƏ</div>
             <div class="price-tag">Aylıq: <span>10 AZN</span></div>
         </header>
@@ -66,9 +72,9 @@
             </div>
 
             <section id="weekly-quiz-section" class="glass-card quiz-section">
-                <h2 id="quiz-week-title">Yüklənir...</h2>
+                <h2 id="quiz-week-title">Həftəlik Sınaq</h2>
                 <div id="quiz-display">
-                    <p id="current-question"></p>
+                    <p id="current-question">Sınaq yüklənir...</p>
                     <div id="quiz-options" class="choice-list"></div>
                 </div>
                 <p id="quiz-result"></p>
