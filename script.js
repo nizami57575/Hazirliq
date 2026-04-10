@@ -1,38 +1,31 @@
-AOS.init();
-
-function closeEntry() {
+function openSite() {
     document.getElementById('entry-screen').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
+    document.getElementById('site-content').style.display = 'block';
 }
 
-function showModal() { document.getElementById('reg-modal').style.display = 'block'; }
-function closeModal() { document.getElementById('reg-modal').style.display = 'none'; }
-
-function checkQuiz(val) {
-    const feedback = document.getElementById('feedback');
-    if(val === 30) {
-        feedback.innerHTML = "🎉 Əla! Düzgün cavab! (Əvvəl vurma edilir)";
-        feedback.style.color = "green";
-    } else {
-        feedback.innerHTML = "❌ Səhvdir. Bir daha yoxla!";
-        feedback.style.color = "red";
-    }
+function showModal() {
+    document.getElementById('reg-modal').style.display = 'block';
 }
 
-function sendWhatsApp() {
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const grade = document.getElementById('grade').value;
+function closeModal() {
+    document.getElementById('reg-modal').style.display = 'none';
+}
 
-    if(!name || !phone) {
-        alert("Zəhmət olmasa məlumatları doldurun!");
+function submitToWhatsApp() {
+    let name = document.getElementById('student-name').value;
+    let phone = document.getElementById('student-phone').value;
+
+    if(name == "" || phone == "") {
+        alert("Zəhmət olmasa xanaları doldurun!");
         return;
     }
 
-    const adminNum = "994XXXXXXXXX"; // ÖZ NÖMRƏNİ BURA YAZ (məs: 994501234567)
-    const text = `Salam! Yeni qeydiyyat:\nAd: ${name}\nNömrə: ${phone}\nSinif: ${grade}\n\nBu müraciət 9-cu sinif yüksək ballı mentorların saytından gəldi.`;
+    // BURADAKI NÖMRƏNİ ÖZ NÖMRƏNLƏ DƏYİŞ (məs: 994501234567)
+    let myNumber = "9940518687053"; 
+    let message = `Salam! Mən ${name}. Saytınızdan qeydiyyatdan keçdim. Nömrəm: ${phone}`;
     
-    window.open(`https://wa.me/${adminNum}?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://wa.me/${myNumber}?text=${encodeURIComponent(message)}`, '_blank');
+    
     closeModal();
-    closeEntry();
+    openSite();
 }
