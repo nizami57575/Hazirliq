@@ -1,6 +1,7 @@
 let userProfile = { name: "", topic: "" };
 let currentQIndex = 0;
 let activeQuestions = [];
+let userResults = []; // Şagirdin cavablarını yadda saxlayır
 
 function openSite() {
     document.getElementById('entry-screen').style.display = 'none';
@@ -56,12 +57,13 @@ function handleBotFlow() {
 
 function finalizeBot(choice) {
     const myNum = "994517728824";
-    const text = `Salam! Mən ${userProfile.name}. Saytdan yazıram. Mövzu: ${userProfile.topic}. Seçimim: ${choice}`;
+    const text = `Salam! Mən ${userProfile.name}. Mövzu: ${userProfile.topic}. Seçimim: ${choice}`;
     window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(text)}`, '_blank');
     closeModal();
     openSite();
 }
 
+// SINAQ SİSTEMİ
 function loadWeeklyQuiz() {
     const now = new Date();
     let currentWeekData = quizDatabase.filter(w => new Date(w.startDate) <= now).pop();
@@ -71,33 +73,72 @@ function loadWeeklyQuiz() {
     }
     document.getElementById('quiz-week-title').innerText = currentWeekData.title;
     activeQuestions = currentWeekData.questions;
+    currentQIndex = 0;
+    userResults = [];
     showQuestion();
 }
 
 function showQuestion() {
+    const quizDisplay = document.getElementById('quiz-display');
+    
     if (currentQIndex >= activeQuestions.length) {
-        document.getElementById('quiz-display').innerHTML = "<h3>Həftəlik sınağı uğurla bitirdiniz! 🏆</h3>";
+        calculateFinalScore();
         return;
     }
+
     const qData = activeQuestions[currentQIndex];
-    document.getElementById('current-question').innerText = `${currentQIndex + 1}. ${qData.q}`;
+    quizDisplay.innerHTML = `
+        <p id="current-question"><strong>${currentQIndex + 1}. ${qData.q}</strong></p>
+        <div id="quiz-options" class="choice-list"></div>
+    `;
+    
     const optsDiv = document.getElementById('quiz-options');
-    optsDiv.innerHTML = '';
     qData.o.forEach(opt => {
         const btn = document.createElement('button');
         btn.innerText = opt;
         btn.className = 'btn-outline';
-        btn.onclick = () => checkAns(opt, qData.c);
+        btn.onclick = () => saveAnswer(opt, qData.c);
         optsDiv.appendChild(btn);
     });
 }
 
-function checkAns(selected, correct) {
-    const res = document.getElementById('quiz-result');
-    if(selected === correct) {
-        res.innerText = "Doğrudur! 🎉"; res.style.color = "#22c55e";
-        setTimeout(() => { currentQIndex++; showQuestion(); res.innerText = ""; }, 1200);
-    } else {
-        res.innerText = "Səhvdir, bir daha yoxla! ❌"; res.style.color = "#ef4444";
-    }
+function saveAnswer(selected, correct) {
+    // Cavabı yadda saxla və növbəti suala keç
+    userResults.push({
+        question: activeQuestions[currentQIndex].q,
+        selected: selected,
+        correct: correct,
+        isCorrect: selected === correct
+    });
+    
+    currentQIndex++;
+    showQuestion();
+}
+
+function calculateFinalScore() {
+    const total = activeQuestions.length;
+    const correctCount = userResults.filter(r => r.isCorrect).length;
+    const percent = Math.round((correctCount / total) * 100);
+    
+    let resultHTML = `<h3>Sınaq Bitdi! 🏆</h3>`;
+    resultHTML += `<p>Nəticə: ${total} sualdan <strong>${correctCount} düz</strong> cavab.</p>`;
+    resultHTML += `<div class="progress-bar"><div style="width:${percent}%; background:#22c55e; height:10px; border-radius:5px;"></div></div>`;
+    resultHTML += `<p>Ümumi Qiymət: ${percent}%</p><hr>`;
+    
+    // Səhvləri və düzləri göstər
+    userResults.forEach((res, index) => {
+        const color = res.isCorrect ? "#22c55e" : "#ef4444";
+        const icon = res.isCorrect ? "✅" : "❌";
+        resultHTML += `
+            <div style="text-align:left; margin-bottom:10px; font-size:14px;">
+                <p><strong>${index + 1}. ${res.question}</strong></p>
+                <p style="color:${color}">${icon} Sizin cavab: ${res.selected}</p>
+                ${!res.isCorrect ? `<p style="color:#22c55e">✔️ Doğru cavab: ${res.correct}</p>` : ""}
+            </div>
+        `;
+    });
+
+    resultHTML += `<button class="btn btn-primary" onclick="loadWeeklyQuiz()">Yenidən Başla</button>`;
+    document.getElementById('quiz-display').innerHTML = resultHTML;
+    document.getElementById('quiz-result').innerText = "";
 }
