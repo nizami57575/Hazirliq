@@ -1,7 +1,16 @@
-let userProfile = { name: "", topic: "" };
+let userProfile = { name: "Şagird", topic: "" };
 let currentQIndex = 0;
 let activeQuestions = [];
-let userResults = []; // Şagirdin cavablarını yadda saxlayır
+let userResults = [];
+let timerInterval;
+let timeLeft = 30;
+
+// Dinamik Salamlama
+window.onload = () => {
+    const hour = new Date().getHours();
+    const msg = hour < 12 ? "Sabahınız xeyir!" : hour < 18 ? "Günortanız xeyir!" : "Axşamınız xeyir!";
+    document.getElementById('greeting-msg').innerText = msg;
+};
 
 function openSite() {
     document.getElementById('entry-screen').style.display = 'none';
@@ -19,32 +28,21 @@ function closeModal() { document.getElementById('bot-modal').style.display = 'no
 
 function resetBot() {
     document.getElementById('user-name-input').style.display = 'block';
-    document.querySelector('.send-btn').style.display = 'block';
     document.getElementById('bot-choices').innerHTML = '';
-    document.getElementById('bot-msg').innerText = "Zirvə Portalına xoş gəldiniz! Adınızı qeyd edin:";
+    document.getElementById('bot-msg').innerText = "Adınızı bura yazın:";
 }
 
 function startConversing() {
-    const name = document.getElementById('user-name-input').value;
-    if(!name) return;
-    userProfile.name = name;
+    userProfile.name = document.getElementById('user-name-input').value || "Şagird";
     document.getElementById('user-name-input').style.display = 'none';
     document.querySelector('.send-btn').style.display = 'none';
     handleBotFlow();
 }
 
 function handleBotFlow() {
-    let msg = ""; let opts = [];
-    if(userProfile.topic === 'registration') {
-        msg = `Salam ${userProfile.name}, hansı sinif üzrə qeydiyyatdan keçmək istəyirsiniz?`;
-        opts = ["1-4-cü sinif", "Məktəbəqədər"];
-    } else if(userProfile.topic === 'fast_learning') {
-        msg = "Dərslərimiz Gəncədə keçirilir. Aylıq ödəniş 10 AZN-dir. Razısınız?";
-        opts = ["Bəli, razıyam", "Daha ətraflı məlumat"];
-    } else {
-        msg = "Sizə hansı mentor kömək etsin?";
-        opts = ["Aysu (Riyaziyyat)", "Aidə (Azərbaycan dili)", "Gültən (Rus dili)", "Sədakət (İngilis dili)"];
-    }
+    let msg = `Salam ${userProfile.name}, sənə necə kömək edə bilərəm?`;
+    let opts = ["Qeydiyyat", "Dərslər haqqında", "Mentorlar"];
+    
     document.getElementById('bot-msg').innerText = msg;
     const choiceDiv = document.getElementById('bot-choices');
     opts.forEach(opt => {
@@ -57,88 +55,81 @@ function handleBotFlow() {
 
 function finalizeBot(choice) {
     const myNum = "994517728824";
-    const text = `Salam! Mən ${userProfile.name}. Mövzu: ${userProfile.topic}. Seçimim: ${choice}`;
+    const text = `Salam Nizami müəllim! Mən ${userProfile.name}. Saytdan yazıram, mövzu: ${choice}`;
     window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(text)}`, '_blank');
-    closeModal();
-    openSite();
 }
 
 // SINAQ SİSTEMİ
 function loadWeeklyQuiz() {
     const now = new Date();
-    let currentWeekData = quizDatabase.filter(w => new Date(w.startDate) <= now).pop();
-    if (!currentWeekData) {
-        document.getElementById('quiz-week-title').innerText = "Sınaqlar tezliklə başlayacaq!";
-        return;
-    }
-    document.getElementById('quiz-week-title').innerText = currentWeekData.title;
-    activeQuestions = currentWeekData.questions;
-    currentQIndex = 0;
-    userResults = [];
+    let data = quizDatabase.filter(w => new Date(w.startDate) <= now).pop();
+    if (!data) return;
+    document.getElementById('quiz-week-title').innerText = data.title;
+    activeQuestions = data.questions;
     showQuestion();
 }
 
+function startTimer() {
+    timeLeft = 30;
+    document.getElementById('timer').innerText = timeLeft;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').innerText = timeLeft;
+        if(timeLeft <= 0) {
+            clearInterval(timerInterval);
+            saveAnswer("Vaxt bitdi");
+        }
+    }, 1000);
+}
+
 function showQuestion() {
-    const quizDisplay = document.getElementById('quiz-display');
-    
     if (currentQIndex >= activeQuestions.length) {
-        calculateFinalScore();
+        clearInterval(timerInterval);
+        calculateFinal();
         return;
     }
-
+    startTimer();
     const qData = activeQuestions[currentQIndex];
-    quizDisplay.innerHTML = `
-        <p id="current-question"><strong>${currentQIndex + 1}. ${qData.q}</strong></p>
-        <div id="quiz-options" class="choice-list"></div>
+    document.getElementById('quiz-display').innerHTML = `
+        <p><strong>Sual ${currentQIndex+1}:</strong> ${qData.q}</p>
+        <div class="choice-list" id="opts"></div>
     `;
-    
-    const optsDiv = document.getElementById('quiz-options');
-    qData.o.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.innerText = opt;
-        btn.className = 'btn-outline';
-        btn.onclick = () => saveAnswer(opt, qData.c);
-        optsDiv.appendChild(btn);
+    qData.o.forEach(o => {
+        const b = document.createElement('button');
+        b.innerText = o;
+        b.onclick = () => saveAnswer(o);
+        document.getElementById('opts').appendChild(b);
     });
 }
 
-function saveAnswer(selected, correct) {
-    // Cavabı yadda saxla və növbəti suala keç
-    userResults.push({
-        question: activeQuestions[currentQIndex].q,
-        selected: selected,
-        correct: correct,
-        isCorrect: selected === correct
-    });
-    
+function saveAnswer(selected) {
+    userResults.push({ q: activeQuestions[currentQIndex].q, s: selected, c: activeQuestions[currentQIndex].c });
     currentQIndex++;
     showQuestion();
 }
 
-function calculateFinalScore() {
-    const total = activeQuestions.length;
-    const correctCount = userResults.filter(r => r.isCorrect).length;
-    const percent = Math.round((correctCount / total) * 100);
+function calculateFinal() {
+    const correct = userResults.filter(r => r.s === r.c).length;
+    const percent = Math.round((correct / activeQuestions.length) * 100);
     
-    let resultHTML = `<h3>Sınaq Bitdi! 🏆</h3>`;
-    resultHTML += `<p>Nəticə: ${total} sualdan <strong>${correctCount} düz</strong> cavab.</p>`;
-    resultHTML += `<div class="progress-bar"><div style="width:${percent}%; background:#22c55e; height:10px; border-radius:5px;"></div></div>`;
-    resultHTML += `<p>Ümumi Qiymət: ${percent}%</p><hr>`;
+    let html = `<h3>Nəticə: ${correct} / ${activeQuestions.length}</h3>`;
+    if(percent >= 80) {
+        html += `<div class="certificate">📜 <b>UĞUR SERTİFİKATI</b><br>Təbrik edirik, ${userProfile.name}!</div>`;
+    }
     
-    // Səhvləri və düzləri göstər
-    userResults.forEach((res, index) => {
-        const color = res.isCorrect ? "#22c55e" : "#ef4444";
-        const icon = res.isCorrect ? "✅" : "❌";
-        resultHTML += `
-            <div style="text-align:left; margin-bottom:10px; font-size:14px;">
-                <p><strong>${index + 1}. ${res.question}</strong></p>
-                <p style="color:${color}">${icon} Sizin cavab: ${res.selected}</p>
-                ${!res.isCorrect ? `<p style="color:#22c55e">✔️ Doğru cavab: ${res.correct}</p>` : ""}
-            </div>
-        `;
-    });
+    html += `<button class="btn btn-primary" onclick="sendToWhatsApp(${correct})">Nəticəni Müəllimə Göndər</button>`;
+    document.getElementById('quiz-display').innerHTML = html;
+}
 
-    resultHTML += `<button class="btn btn-primary" onclick="loadWeeklyQuiz()">Yenidən Başla</button>`;
-    document.getElementById('quiz-display').innerHTML = resultHTML;
-    document.getElementById('quiz-result').innerText = "";
+function sendToWhatsApp(score) {
+    const myNum = "994517728824";
+    const text = `Sınaq Bitdi! Şagird: ${userProfile.name}. Bal: ${score}/${activeQuestions.length}`;
+    window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function shareSite() {
+    if (navigator.share) {
+        navigator.share({ title: 'Zirvə Portal', url: window.location.href });
+    }
 }
