@@ -9,35 +9,27 @@
 </head>
 <body>
 
-    <div class="bg-animation">
-        <div class="circle"></div>
-        <div class="circle"></div>
-    </div>
-
-    <div class="info-banner">
-        <p>🚀 <strong>MƏLUMAT:</strong> Bu layihə yüksək ballı 10-cu sinif mentorları tərəfindən idarə olunur!</p>
-    </div>
+    <div class="bg-animation"><div class="circle"></div><div class="circle"></div></div>
 
     <div id="entry-screen" class="overlay">
         <div class="glass-card entry-card">
-            <div class="status-badge">Aktiv Hazırlıq</div>
-            <h2>Zirvə Portal</h2>
-            <p>Gələcəyinizi bizimlə zirvəyə daşıyın.</p>
-            <button class="btn btn-primary" onclick="showBot('registration')">📝 İndi Qeydiyyatdan Keç</button>
-            <button class="btn btn-outline" onclick="openSite()">🚀 Saytı Kəşf Et</button>
+            <h1 id="greeting-msg">Xoş Gəldiniz!</h1>
+            <p>Zirvə Təhsil Portalı - Gələcəyini İndi Qur.</p>
+            <button class="btn btn-primary" onclick="showBot('registration')">📝 Qeydiyyat</button>
+            <button class="btn btn-outline" onclick="openSite()">🚀 Sayta Keç</button>
         </div>
     </div>
 
     <div id="bot-modal" class="modal">
         <div class="glass-card bot-container">
             <div class="bot-header">
-                <i class="fas fa-robot"></i> <span>Zirvə Köməkçisi</span>
+                <span><i class="fas fa-robot"></i> Zirvə Bot</span>
                 <button onclick="closeModal()" class="close-btn">&times;</button>
             </div>
             <div id="bot-content" class="bot-body">
                 <p id="bot-msg"></p>
                 <div id="bot-input-group">
-                    <input type="text" id="user-name-input" placeholder="Adınız və Soyadınız">
+                    <input type="text" id="user-name-input" placeholder="Adınızı yazın...">
                     <button onclick="startConversing()" class="send-btn"><i class="fas fa-paper-plane"></i></button>
                 </div>
                 <div id="bot-choices" class="choice-list"></div>
@@ -45,39 +37,30 @@
         </div>
     </div>
 
-    <div id="main-content" style="display:none; padding-top: 80px;">
-        <header class="main-header container">
+    <div id="main-content" style="display:none; padding-top: 50px;">
+        <nav class="container nav-bar">
             <div class="logo">ZİRVƏ</div>
-            <div class="price-tag">Aylıq: <span>10 AZN</span></div>
-        </header>
+            <div class="nav-links">
+                <button onclick="showBot('support')"><i class="fas fa-headset"></i></button>
+                <button onclick="shareSite()"><i class="fas fa-share-alt"></i></button>
+            </div>
+        </nav>
 
         <main class="container">
-            <div class="features-grid">
-                <div class="f-card" onclick="showBot('fast_learning')">
-                    <div class="icon-box"><i class="fas fa-bolt"></i></div>
-                    <h3>Sürətli Öyrənmə</h3>
-                    <p>Həftədə 4 gün intensiv proqram.</p>
-                </div>
-                <div class="f-card" onclick="showBot('mentors')">
-                    <div class="icon-box"><i class="fas fa-user-check"></i></div>
-                    <h3>Mentor Dəstəyi</h3>
-                    <p>Yüksək ballı 10-cu siniflərlə öyrənin.</p>
-                </div>
+            <div class="leader-banner glass-card">
+                <span>🏆 Həftənin Qalibi:</span> <strong>Nizami Cəfərli</strong>
             </div>
 
-            <section id="weekly-quiz-section" class="glass-card quiz-section">
-                <h2 id="quiz-week-title">Yüklənir...</h2>
-                <div id="quiz-display">
-                    <p id="current-question"></p>
-                    <div id="quiz-options" class="choice-list"></div>
+            <section id="quiz-area" class="glass-card">
+                <div class="quiz-header">
+                    <h2 id="quiz-week-title">Yüklənir...</h2>
+                    <div id="timer" class="timer-circle">30</div>
                 </div>
-                <p id="quiz-result"></p>
+                <div id="quiz-display">
+                    <p>Başlamaq üçün düyməni sıxın.</p>
+                </div>
             </section>
         </main>
-
-        <footer>
-            <p>Əlaqə: +994 51 772 88 24</p>
-        </footer>
     </div>
 
     <script src="questions.js"></script>
