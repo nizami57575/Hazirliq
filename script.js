@@ -5,17 +5,16 @@ let userResults = [];
 let timerInterval;
 let timeLeft = 30;
 
-// Dinamik Salamlama
+// Sayt açılan kimi salamlama və aylıq sualları yüklə
 window.onload = () => {
     const hour = new Date().getHours();
-    const msg = hour < 12 ? "Sabahınız xeyir!" : hour < 18 ? "Günortanız xeyir!" : "Axşamınız xeyir!";
-    document.getElementById('greeting-msg').innerText = msg;
+    document.getElementById('greeting-msg').innerText = hour < 12 ? "Sabahınız xeyir!" : hour < 18 ? "Günortanız xeyir!" : "Axşamınız xeyir!";
 };
 
 function openSite() {
     document.getElementById('entry-screen').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
-    loadWeeklyQuiz();
+    loadMonthlyQuiz();
 }
 
 function showBot(topic) {
@@ -28,21 +27,23 @@ function closeModal() { document.getElementById('bot-modal').style.display = 'no
 
 function resetBot() {
     document.getElementById('user-name-input').style.display = 'block';
+    document.querySelector('.send-btn').style.display = 'block';
     document.getElementById('bot-choices').innerHTML = '';
-    document.getElementById('bot-msg').innerText = "Adınızı bura yazın:";
+    document.getElementById('bot-msg').innerText = "Zirvə Portalına xoş gəldiniz! Adınızı yazın:";
 }
 
 function startConversing() {
-    userProfile.name = document.getElementById('user-name-input').value || "Şagird";
+    const name = document.getElementById('user-name-input').value;
+    if(!name) return;
+    userProfile.name = name;
     document.getElementById('user-name-input').style.display = 'none';
     document.querySelector('.send-btn').style.display = 'none';
     handleBotFlow();
 }
 
 function handleBotFlow() {
-    let msg = `Salam ${userProfile.name}, sənə necə kömək edə bilərəm?`;
-    let opts = ["Qeydiyyat", "Dərslər haqqında", "Mentorlar"];
-    
+    let msg = `Salam ${userProfile.name}, hansı mövzuda kömək lazımdır?`;
+    let opts = ["Qeydiyyat", "Dərslər", "Mentorlar"];
     document.getElementById('bot-msg').innerText = msg;
     const choiceDiv = document.getElementById('bot-choices');
     opts.forEach(opt => {
@@ -55,17 +56,22 @@ function handleBotFlow() {
 
 function finalizeBot(choice) {
     const myNum = "994517728824";
-    const text = `Salam Nizami müəllim! Mən ${userProfile.name}. Saytdan yazıram, mövzu: ${choice}`;
+    const text = `Salam! Mən ${userProfile.name}. Mövzu: ${choice}`;
     window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 // SINAQ SİSTEMİ
-function loadWeeklyQuiz() {
-    const now = new Date();
-    let data = quizDatabase.filter(w => new Date(w.startDate) <= now).pop();
-    if (!data) return;
-    document.getElementById('quiz-week-title').innerText = data.title;
+function loadMonthlyQuiz() {
+    const currentMonth = new Date().getMonth() + 1; // 1-12 arası
+    let data = quizDatabase.find(q => q.month === currentMonth);
+    
+    // Əgər cari ay üçün sual yoxdursa, ən sonuncu ayı götür
+    if (!data) data = quizDatabase[quizDatabase.length - 1];
+    
+    document.getElementById('quiz-month-title').innerText = data.title;
     activeQuestions = data.questions;
+    currentQIndex = 0;
+    userResults = [];
     showQuestion();
 }
 
@@ -86,50 +92,66 @@ function startTimer() {
 function showQuestion() {
     if (currentQIndex >= activeQuestions.length) {
         clearInterval(timerInterval);
-        calculateFinal();
+        showResults();
         return;
     }
     startTimer();
     const qData = activeQuestions[currentQIndex];
+    const total = activeQuestions.length;
+    const progress = (currentQIndex / total) * 100;
+
     document.getElementById('quiz-display').innerHTML = `
-        <p><strong>Sual ${currentQIndex+1}:</strong> ${qData.q}</p>
+        <div class="progress-container"><div class="progress-bar" style="width:${progress}%"></div></div>
+        <p><strong>${currentQIndex + 1}. ${qData.q}</strong></p>
         <div class="choice-list" id="opts"></div>
     `;
-    qData.o.forEach(o => {
-        const b = document.createElement('button');
-        b.innerText = o;
-        b.onclick = () => saveAnswer(o);
-        document.getElementById('opts').appendChild(b);
+    
+    qData.o.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => saveAnswer(opt);
+        document.getElementById('opts').appendChild(btn);
     });
 }
 
 function saveAnswer(selected) {
-    userResults.push({ q: activeQuestions[currentQIndex].q, s: selected, c: activeQuestions[currentQIndex].c });
+    userResults.push({
+        q: activeQuestions[currentQIndex].q,
+        selected: selected,
+        correct: activeQuestions[currentQIndex].c
+    });
     currentQIndex++;
     showQuestion();
 }
 
-function calculateFinal() {
-    const correct = userResults.filter(r => r.s === r.c).length;
-    const percent = Math.round((correct / activeQuestions.length) * 100);
+function showResults() {
+    const total = activeQuestions.length;
+    const correctCount = userResults.filter(r => r.selected === r.correct).length;
+    const percent = Math.round((correctCount / total) * 100);
     
-    let html = `<h3>Nəticə: ${correct} / ${activeQuestions.length}</h3>`;
-    if(percent >= 80) {
-        html += `<div class="certificate">📜 <b>UĞUR SERTİFİKATI</b><br>Təbrik edirik, ${userProfile.name}!</div>`;
-    }
+    let html = `<h3>Sınaq Bitdi! 🏁</h3>`;
+    html += `<h2>${correctCount} / ${total} düzgün</h2>`;
+    html += `<p>Nəticə: ${percent}%</p>`;
     
-    html += `<button class="btn btn-primary" onclick="sendToWhatsApp(${correct})">Nəticəni Müəllimə Göndər</button>`;
+    if(percent >= 80) html += `<div style="border: 2px solid gold; padding: 10px; margin: 10px 0;">📜 UĞUR SERTİFİKATI QAZANDINIZ!</div>`;
+    
+    html += `<div style="text-align:left; max-height: 200px; overflow-y: auto; margin: 15px 0;">`;
+    userResults.forEach((res, i) => {
+        const color = res.selected === res.correct ? "#22c55e" : "#ef4444";
+        html += `
+            <div class="ans-item" style="border-left: 4px solid ${color}">
+                ${i+1}. ${res.q}<br>
+                Sənin cavabın: ${res.selected} ${res.selected !== res.correct ? `| Doğru: ${res.correct}` : ""}
+            </div>`;
+    });
+    html += `</div>`;
+    
+    html += `<button class="btn btn-primary" onclick="window.open('https://wa.me/994517728824?text=${encodeURIComponent('Sınaq nəticəm: ' + correctCount + '/' + total)}', '_blank')">WhatsApp ilə göndər</button>`;
+    html += `<button class="btn btn-outline" onclick="loadMonthlyQuiz()">Yenidən Başla</button>`;
+    
     document.getElementById('quiz-display').innerHTML = html;
 }
 
-function sendToWhatsApp(score) {
-    const myNum = "994517728824";
-    const text = `Sınaq Bitdi! Şagird: ${userProfile.name}. Bal: ${score}/${activeQuestions.length}`;
-    window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(text)}`, '_blank');
-}
-
 function shareSite() {
-    if (navigator.share) {
-        navigator.share({ title: 'Zirvə Portal', url: window.location.href });
-    }
+    if (navigator.share) navigator.share({ title: 'Zirvə Portal', url: window.location.href });
 }
